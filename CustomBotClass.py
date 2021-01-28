@@ -9,7 +9,7 @@ class DiscordBottoClient(discord.Client):
     async def on_member_join(self, member):
         await member.create_dm()
         await member.dm_channel.send(f'Great! Now this server reeks of {member.name}!')
-    async def on_message(self, message):
+    async def on_message(self, message : discord.Message):
         if message.author == self.user:
             return
         
@@ -29,6 +29,14 @@ class DiscordBottoClient(discord.Client):
             else:
                 await message.channel.send(response)
         
+        elif command[1] == HTML_TYPE:
+            embed = command[0](message=message)
+            await message.channel.send(embed=embed)
+        
+        elif command[1] == FILE_TYPE:
+            file = command[0](message=message)
+            await message.channel.send(file=file)
+        
 
         pass
     
@@ -36,7 +44,7 @@ class DiscordBottoClient(discord.Client):
 
     def find_command(self, message_content):
         
-        commands = {'!help':(self.help, MESSAGE_TYPE), '!Yoda':(self.yoda_command, MESSAGE_TYPE)}
+        commands = {'!help':(self.help, HTML_TYPE), '!Yoda':(self.yoda_command, MESSAGE_TYPE), '!important':(self.important_file_send, FILE_TYPE)}
 
         for key, value in commands.items():
             key_length = len(key)
@@ -48,28 +56,34 @@ class DiscordBottoClient(discord.Client):
         
 
 
-    def help(self, message):
-        pass
+    def help(self, message) -> discord.Embed:
+        embed=discord.Embed(title="Help", description="List of Commands")
+        embed.add_field(name="!Yoda", value="Yoda quotes", inline=True)
+        embed.add_field(name="!help", value="You just issued this command, you dingus!", inline=True)
+        embed.add_field(name='!important', value="Very important", inline=True)
+
+        return embed
+        
     def yoda_command(self, message):
-        response = "Crush my cock with a rock"
-        return response
+        list_of_responses = ["Crush my cock with a rock", "Bend over, you will"]
+        return random.choice(list_of_responses)
 
     def check_if_myles_talking(self, message):
         print("Name - ", message.author, "Class - ", str(type(message.author)))
 
         if str(message.author) == "BorisLoveHammer#1118":
             return self.myles_talking()
-
-        elif str(message.author) == "Meta567#3950":
-            return "\nHello\nWho are you?"
         else:
             raise NoResponseError()
 
     def myles_talking(self, message):
         list_of_responses = ['\nSpongeBob: "Hey Patrick, what am I know?\nPatrick:"Uhhhh, stupid?"\nSpongeBob:"No, I\'m Myles!"\nPatrick: "What\'s the difference!!!"', 
-        'Hey Buddy, did you just fly in from Stupidtown?', "My wish is that the people of this server will stop paying any attention to the innane dribble that is constantly streaming out of this dunderhead's mouth.",
-        "Shut your mouth, you mediocre clarinet player"]
+        'Hey Buddy, did you just blow in from Stupidtown?', "My wish is that the people of this server will stop paying any attention to the innane dribble that is constantly streaming out of this dunderhead's mouth.",
+        "Shut your mouth, you mediocre clarinet player", "Hey Buddy, you need a ride? I was just on my way to the big doofus convention!"]
 
         response = random.choice(list_of_responses)
 
         return response
+    
+    def important_file_send(self, message):
+        return discord.File(filename='./files/important.txt')
