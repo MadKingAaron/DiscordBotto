@@ -86,4 +86,4 @@ class DiscordBottoClient(discord.Client):
         return response
     
     def important_file_send(self, message):
-        return discord.File(filename='./files/important.txt')
+        return discord.File(fp="./files/important.txt", filename='important.txt')
