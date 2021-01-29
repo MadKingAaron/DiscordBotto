@@ -65,7 +65,7 @@ class DiscordBottoClient(discord.Client):
         return embed
         
     def yoda_command(self, message):
-        list_of_responses = ["Crush my cock with a rock", "Bend over, you will"]
+        list_of_responses = ["Crush my cock with a rock", "Bend over, you will", "!play https://www.youtube.com/watch?v=LzxCJzM4xLo", "!play https://youtu.be/VZFCXYFWYso"]
         return random.choice(list_of_responses)
 
     def check_if_myles_talking(self, message):
