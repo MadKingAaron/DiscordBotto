@@ -72,7 +72,7 @@ class DiscordBottoClient(discord.Client):
         print("Name - ", message.author, "Class - ", str(type(message.author)))
 
         if str(message.author) == "BorisLoveHammer#1118":
-            return self.myles_talking()
+            return self.myles_talking(message=message)
         else:
             raise NoResponseError()
 
